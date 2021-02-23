@@ -34,6 +34,7 @@ def create_app(test_config=None):
       abort(404)
 
   @app.route('/devices/list', methods=["GET"])
+  @requires_auth('get:list') # for admin and user
   def list_devices():
     all_devices = [device.format() for device in Device.query.all()]
     return jsonify({
@@ -42,7 +43,7 @@ def create_app(test_config=None):
     }), 200
 
   @app.route('/device/<int:id>', methods=["DELETE"])
-  # @requires_auth('delete:device')
+  @requires_auth('delete:device') # admin only
   def delete_device(id):
     target_device = Device.query.filter_by(id=id).one_or_none()
     if target_device:
@@ -58,14 +59,14 @@ def create_app(test_config=None):
       abort(404)
 
   @app.route('/status/change', methods=["PATCH"])
-  # @requires_auth('patch:device')
+  @requires_auth('patch:device')
   def change_status():
     changes = request.get_json()
     if not (("id" in changes) and ("status" in changes)):
       abort(400)
     target_device = Device.query.filter_by(id=id).one_or_none()
     if target_device:
-      target_device.status = status
+      target_device.status = changes["status"]
       target_device.update()
       return jsonify({
         "Success": True, 
@@ -75,7 +76,7 @@ def create_app(test_config=None):
       abort(404)
 
   @app.route('/add/measure', methods=["POST"])
-  # @requires_auth('post:measure')
+  @requires_auth('post:measure')
   def add_measure():
     data = request.get_json()
     is_time_in = "time" in data
