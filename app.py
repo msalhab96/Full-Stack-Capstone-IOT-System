@@ -35,7 +35,7 @@ def create_app(test_config=None):
 
   @app.route('/devices/list', methods=["GET"])
   @requires_auth('get:list') # for admin and user
-  def list_devices():
+  def list_devices(payload):
     all_devices = [device.format() for device in Device.query.all()]
     return jsonify({
       "Success": True,
@@ -44,7 +44,7 @@ def create_app(test_config=None):
 
   @app.route('/device/<int:id>', methods=["DELETE"])
   @requires_auth('delete:device') # admin only
-  def delete_device(id):
+  def delete_device(payload, id):
     target_device = Device.query.filter_by(id=id).one_or_none()
     if target_device:
       try:
@@ -60,10 +60,11 @@ def create_app(test_config=None):
 
   @app.route('/status/change', methods=["PATCH"])
   @requires_auth('patch:device')
-  def change_status():
+  def change_status(payload):
     changes = request.get_json()
     if not (("id" in changes) and ("status" in changes)):
       abort(400)
+    id = changes["id"]
     target_device = Device.query.filter_by(id=id).one_or_none()
     if target_device:
       target_device.status = changes["status"]
@@ -77,7 +78,7 @@ def create_app(test_config=None):
 
   @app.route('/add/measure', methods=["POST"])
   @requires_auth('post:measure')
-  def add_measure():
+  def add_measure(payload):
     data = request.get_json()
     is_time_in = "time" in data
     is_value_in = "value" in data
@@ -85,16 +86,16 @@ def create_app(test_config=None):
     is_device_in = "device" in data
     is_valid = is_time_in and is_value_in and is_rank_in and is_device_in
     if is_valid:
-      measure = Measures(
-        value = data['value'], 
-        rank = data['rank'],
-        time = data['time'],
-        deviceid = data['device']
+      temp_measure = Measures(
+        Value = data['value'], 
+        Rank = data['rank'],
+        DateTime = data['time'],
+        DeviceId = data['device']
         )
-      measure.insert()
+      temp_measure.insert()
       return jsonify({
         "Success": True, 
-        "Message": f"measure added!"
+        "Message": "measure added!"
         }), 200
     else:
       abort(404)

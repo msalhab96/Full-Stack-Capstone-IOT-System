@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float
 import json
 from flask import Flask
 from config import *
-
+db = SQLAlchemy()
 # DATABASE_NAME
 # END_POINT
 # USERNAME
@@ -10,10 +10,11 @@ from config import *
 # DATABASE_PATH
 
 def setup_db(app, database_path=DATABASE_PATH):
-    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_PATH
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+    db.drop_all()
     db.create_all()
 
 class Device(db.Model):
