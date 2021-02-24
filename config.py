@@ -6,10 +6,5 @@ PASSWORD = "rootuser"
 AUTH0_DOMAIN = "deviceiot.au.auth0.com"
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'deviceapi'
-DATABASE_PATH = "postgres://{}:{}@{}/{}".format(
-                                                USERNAME, 
-                                                PASSWORD, 
-                                                END_POINT, 
-                                                DATABASE_NAME
-                                                )
-db = SQLAlchemy()
+
+DATABASE_PATH = "ostgres://tavextxdjjjftk:9d8ac1cb80be91f11fc2f8f755d9a3dda1b1b4562424f0d090f3eeff28596b46@ec2-3-209-176-42.compute-1.amazonaws.com:5432/de1dt92bf1fcia"
