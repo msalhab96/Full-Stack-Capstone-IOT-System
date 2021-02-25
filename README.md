@@ -8,12 +8,13 @@ To access the API use the following Link: https://devicespro.herokuapp.com/
   - python3.8
   - creat virtual enviroment "python -m venv <enviroment name>"
   - activate your enviroment using "source <enviroment name>/bin/activate"
-  - install the requirements in reuirements.txt file using " pip install -r requirements"
+  - install the requirements in reuirements.txt file using " pip install -r requirements.txt"
   - install postgres 
   - access postgres using "sudo -u <username> -i"
   - create database using "createdb <database name>"
+  - run the following command "flask db init && flask db migrate -m 'Initial migration.' && flask db upgrade"
   - run the tests using "python test_app.py"
-  - run the server using "python 
+  - run the server using "python app.py"
 
 
 ## Getting Started with the API
