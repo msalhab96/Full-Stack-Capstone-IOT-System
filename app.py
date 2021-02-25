@@ -1,5 +1,10 @@
 import os
-from flask import Flask, request, abort, jsonify
+from flask import (
+  Flask, 
+  request, 
+  abort, 
+  jsonify
+  )
 from flask_cors import CORS
 from models import setup_db, Device, Measures
 from Authentication import AuthError, requires_auth
@@ -62,12 +67,14 @@ def create_app(test_config=None):
   @requires_auth('patch:device')
   def change_status(payload):
     changes = request.get_json()
-    if not (("id" in changes) and ("status" in changes)):
+    try:
+      id= changes['id']
+      status = changes['status']
+    except:
       abort(400)
-    id = changes["id"]
     target_device = Device.query.filter_by(id=id).one_or_none()
     if target_device:
-      target_device.status = changes["status"]
+      target_device.status = status
       target_device.update()
       return jsonify({
         "Success": True, 

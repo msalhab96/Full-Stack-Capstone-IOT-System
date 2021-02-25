@@ -1,12 +1,19 @@
 # Full-Stack-Capstone-IOT-System
-
+This is capstone project for Full stack web developement nano degree on udacity, this project aimed to build an API for IOT system that by it you could track your devices and their status and update them and also story the measurements of your devices into a database
 ##  Full Stack Developer Nanodegree Capstone Project
 To access the API use the following Link: https://devicespro.herokuapp.com/
 
 ## Setting Up you Machine
 - install the dependencies 
-  - python3.x
+  - python3.8
+  - creat virtual enviroment "python -m venv <enviroment name>"
+  - activate your enviroment using "source <enviroment name>/bin/activate"
   - install the requirements in reuirements.txt file using " pip install -r requirements"
+  - install postgres 
+  - access postgres using "sudo -u <username> -i"
+  - create database using "createdb <database name>"
+  - run the tests using "python test_app.py"
+  - run the server using "python 
 
 
 ## Getting Started with the API
