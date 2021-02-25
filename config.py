@@ -1,4 +1,4 @@
-import os 
+import os
 DATABASE_NAME = "measurements"
 END_POINT = "localhost:5432"
 USERNAME = "rootuser"

@@ -4,9 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import setup_db, Device, Measures
 from datetime import datetime
-import os 
+import os
 USER_TOKEN = open('user_auth.txt').read().strip()
 ADMIN_TOKEN = open('admin_auth.txt').read().strip()
+
 
 class TestApp(unittest.TestCase):
     """
@@ -17,18 +18,21 @@ class TestApp(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "app_test"
-        self.database_path = "postgres://rootuser:rootuser@{}/{}".format('localhost:5432', self.database_name)
+        self.database_path = "postgres://rootuser:rootuser@{}/{}".format(
+            'localhost:5432',
+            self.database_name
+            )
         setup_db(self.app, self.database_path)
         test_dev_1 = Device(
-            "TEST DEVICE 1", 
-            datetime.now(), 
-            datetime.now(), 
+            "TEST DEVICE 1",
+            datetime.now(),
+            datetime.now(),
             True
             )
         test_dev_2 = Device(
-            "TEST DEVICE 2", 
-            datetime.now(), 
-            datetime.now(), 
+            "TEST DEVICE 2",
+            datetime.now(),
+            datetime.now(),
             True
             )
         test_dev_1.insert()
@@ -37,7 +41,7 @@ class TestApp(unittest.TestCase):
     def tearDown(self):
         """Executed after reach test"""
         pass
-    
+
     def test_index_success(self):
         response = self.client().get('/')
         self.assertEqual(response.status_code, 200)
@@ -49,49 +53,49 @@ class TestApp(unittest.TestCase):
     def test_get_device_failure(self):
         response = self.client().get('/devices/45555555555')
         self.assertEqual(response.status_code, 404)
-    
+
     def test_list_success_1(self):
         headers = {"Authorization": "Bearer " + USER_TOKEN}
-        response = self.client().get('/devices/list', headers = headers)
+        response = self.client().get('/devices/list', headers=headers)
         self.assertEqual(response.status_code, 200)
 
     def test_list_success_2(self):
         headers = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
-        response = self.client().get('/devices/list', headers = headers)
+        response = self.client().get('/devices/list', headers=headers)
         self.assertEqual(response.status_code, 200)
-    
+
     def test_list_failure_1(self):
         headers = {"Authorization": f"Be ar er {USER_TOKEN}"}
-        response = self.client().get('/devices/list', headers = headers)
+        response = self.client().get('/devices/list', headers=headers)
         self.assertEqual(response.status_code, 401)
 
     def test_list_failure_2(self):
         headers = {"Authorization": "Bearer"}
-        response = self.client().get('/devices/list', headers = headers)
+        response = self.client().get('/devices/list', headers=headers)
         self.assertEqual(response.status_code, 401)
 
     def test_delete_device_success(self):
         headers = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
-        response = self.client().delete('/device/1', headers = headers)
+        response = self.client().delete('/device/1', headers=headers)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_device_failure_1(self):
         headers = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
-        response = self.client().delete('/device/1464684654', headers = headers)
+        response = self.client().delete('/device/1464684654', headers=headers)
         self.assertEqual(response.status_code, 404)
 
     def test_delete_device_failure_2(self):
         headers = {"Authorization": f"Bearer {USER_TOKEN}"}
-        response = self.client().delete('/device/1', headers = headers)
+        response = self.client().delete('/device/1', headers=headers)
         self.assertEqual(response.status_code, 401)
 
     def test_change_status_success(self):
         headers = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
         data = {"id": 2, "status": False}
         response = self.client().patch(
-                                     '/status/change', 
-                                     headers = headers, 
-                                     json = data
+                                     '/status/change',
+                                     headers=headers,
+                                     json=data
                                      )
         self.assertEqual(response.status_code, 200)
 
@@ -99,9 +103,9 @@ class TestApp(unittest.TestCase):
         headers = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
         data = {"status": False}
         response = self.client().patch(
-                                     '/status/change', 
-                                     headers = headers, 
-                                     json = data
+                                     '/status/change',
+                                     headers=headers,
+                                     json=data
                                      )
         self.assertEqual(response.status_code, 400)
 
@@ -109,9 +113,9 @@ class TestApp(unittest.TestCase):
         headers = {"Authorization": f"Bearer {USER_TOKEN}"}
         data = {"id": 2, "status": False}
         response = self.client().patch(
-                                     '/status/change', 
-                                     headers = headers, 
-                                     json = data
+                                     '/status/change',
+                                     headers=headers,
+                                     json=data
                                      )
         self.assertEqual(response.status_code, 401)
 
@@ -121,12 +125,12 @@ class TestApp(unittest.TestCase):
             "time": datetime.now(),
             "value": 4.365,
             "rank": 2,
-            "device": 2 
+            "device": 2
         }
         response = self.client().post(
-                                     '/add/measure', 
-                                     headers = headers, 
-                                     json = data
+                                     '/add/measure',
+                                     headers=headers,
+                                     json=data
                                      )
         self.assertEqual(response.status_code, 200)
 
@@ -138,9 +142,9 @@ class TestApp(unittest.TestCase):
             "rank": 2
         }
         response = self.client().post(
-                                     '/add/measure', 
-                                     headers = headers, 
-                                     json = data
+                                     '/add/measure',
+                                     headers=headers,
+                                     json=data
                                      )
         self.assertEqual(response.status_code, 404)
 
@@ -150,14 +154,15 @@ class TestApp(unittest.TestCase):
             "time": datetime.now(),
             "value": 4.365,
             "rank": 2,
-            "device": 2 
+            "device": 2
         }
         response = self.client().post(
-                                     '/add/measure', 
-                                     headers = headers, 
-                                     json = data
+                                     '/add/measure',
+                                     headers=headers,
+                                     json=data
                                      )
         self.assertEqual(response.status_code, 401)
-    
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -5,11 +5,12 @@ from urllib.request import urlopen
 from flask import request
 from jose import jwt
 
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
-    
+
 
 def get_token_auth_header():
     """
@@ -39,13 +40,13 @@ def get_token_auth_header():
         }, 401)
 
     return auth_parts[1]
-   
+
 
 def check_permissions(permission, payload):
     """
     check if the user has the right permission to
-    access the resource or not, it checks first if 
-    permission part exist in the payload, if not error will 
+    access the resource or not, it checks first if
+    permission part exist in the payload, if not error will
     be raised!
     """
     if "permissions" not in payload:
@@ -65,7 +66,7 @@ def check_permissions(permission, payload):
 
 def verify_decode_jwt(token):
     """
-    this function is used to verfiy if the token is 
+    this function is used to verfiy if the token is
     valid or not
     """
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
@@ -108,7 +109,7 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description': 'Incorrect claims.'
             }, 401)
         except Exception:
             raise AuthError({
