@@ -3,6 +3,15 @@ This is capstone project for Full stack web developement nano degree on udacity,
 ##  Full Stack Developer Nanodegree Capstone Project
 To access the API use the following Link: https://devicespro.herokuapp.com/
 
+## Key Dependencies
+
+- [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
+
+- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
+
+- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
+
+
 ## Setting Up you Machine
 - install the dependencies 
   - python3.8
@@ -15,7 +24,6 @@ To access the API use the following Link: https://devicespro.herokuapp.com/
   - run the following command "flask db init && flask db migrate -m 'Initial migration.' && flask db upgrade"
   - run the tests using "python test_app.py"
   - run the server using "python app.py"
-
 
 ## Getting Started with the API
 
